@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Game Develop 62 - Copy.slnx"
+    "dotnet.defaultSolution": "Crystal Escape.slnx"
 }

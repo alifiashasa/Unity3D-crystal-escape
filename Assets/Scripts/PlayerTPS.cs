@@ -21,6 +21,9 @@ public class PlayerTPS : MonoBehaviour
     [SerializeField] private float groundDistance = 0.1f;
     [SerializeField] private LayerMask groundMask;
 
+    [Header("Fall Limit")]
+    [SerializeField] private float fallThreshold = -10f;
+
     [Header("References")]
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Animator animator;
@@ -103,6 +106,7 @@ public class PlayerTPS : MonoBehaviour
         HandleJump();
         ApplyGravity();
         UpdateAnimator();
+        CheckFallLimit();
     }
 
     private void CheckGround()
@@ -246,6 +250,17 @@ public class PlayerTPS : MonoBehaviour
                 float volume = sprintPressed ? footstepVolume : footstepVolume * 0.75f;
                 audioSource.pitch = Random.Range(0.9f, 1.15f);
                 audioSource.PlayOneShot(footstepSound, volume);
+            }
+        }
+    }
+
+    private void CheckFallLimit()
+    {
+        if (transform.position.y < fallThreshold)
+        {
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.GameOver();
             }
         }
     }

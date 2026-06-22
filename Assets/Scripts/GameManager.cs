@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,27 +11,112 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI crystalText;
 
-    [SerializeField] private AudioClip collectCrystalSound;
+    public GameObject winPanel;
+    public GameObject gameOverPanel;
+
+    private bool levelComplete = false;
+    private bool isGameOver = false;
 
     private void Awake()
     {
         instance = this;
     }
 
+    private void Start()
+    {
+        if (gameOverPanel != null)
+        {
+            Transform restartBtnTransform = gameOverPanel.transform.Find("RestartButton");
+            if (restartBtnTransform == null)
+            {
+                restartBtnTransform = gameOverPanel.transform.Find("NextLevel");
+            }
+            if (restartBtnTransform != null)
+            {
+                Button restartBtn = restartBtnTransform.GetComponent<Button>();
+                if (restartBtn != null)
+                {
+                    restartBtn.onClick.RemoveAllListeners();
+                    restartBtn.onClick.AddListener(RestartGame);
+                }
+            }
+
+            Transform mainMenuBtnTransform = gameOverPanel.transform.Find("MainMenu");
+            if (mainMenuBtnTransform != null)
+            {
+                Button mainMenuBtn = mainMenuBtnTransform.GetComponent<Button>();
+                if (mainMenuBtn != null)
+                {
+                    mainMenuBtn.onClick.RemoveAllListeners();
+                    mainMenuBtn.onClick.AddListener(MainMenu);
+                }
+            }
+        }
+    }
+
     public void AddCrystal()
     {
+        if(levelComplete || isGameOver) return;
+
         crystalCount++;
 
-        crystalText.text = "Crystal : " + crystalCount + "/3";
+        crystalText.text =
+            "Crystal : " + crystalCount + "/3";
 
-        if (collectCrystalSound != null)
+        if(crystalCount >= 3)
         {
-            AudioSource cameraAudio = Camera.main.GetComponent<AudioSource>();
-            if (cameraAudio == null)
-            {
-                cameraAudio = Camera.main.gameObject.AddComponent<AudioSource>();
-            }
-            cameraAudio.PlayOneShot(collectCrystalSound);
+            LevelComplete();
         }
+    }
+
+    void LevelComplete()
+    {
+        levelComplete = true;
+
+        winPanel.SetActive(true);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        Time.timeScale = 0f;
+    }
+
+    public void GameOver()
+    {
+        if (levelComplete || isGameOver) return;
+
+        isGameOver = true;
+
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        Time.timeScale = 0f;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void NextLevel()
+    {
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene(
+            SceneManager.GetActiveScene().buildIndex + 1
+        );
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene("Main Menu");
     }
 }

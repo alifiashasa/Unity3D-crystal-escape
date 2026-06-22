@@ -45,6 +45,9 @@ public class LevelTimer : MonoBehaviour
     {
         Debug.Log("GAME OVER");
 
-        // nanti bisa pindah scene game over
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.GameOver();
+        }
     }
 }
