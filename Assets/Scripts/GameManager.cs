@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
     public GameObject winPanel;
     public GameObject gameOverPanel;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip collectSound;
+    private AudioSource audioSource;
+
     private bool levelComplete = false;
     private bool isGameOver = false;
 
@@ -57,6 +61,19 @@ public class GameManager : MonoBehaviour
     public void AddCrystal()
     {
         if(levelComplete || isGameOver) return;
+
+        if (collectSound != null)
+        {
+            if (audioSource == null)
+            {
+                audioSource = GetComponent<AudioSource>();
+                if (audioSource == null)
+                {
+                    audioSource = gameObject.AddComponent<AudioSource>();
+                }
+            }
+            audioSource.PlayOneShot(collectSound);
+        }
 
         crystalCount++;
 
