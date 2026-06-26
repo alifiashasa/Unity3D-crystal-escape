@@ -19,7 +19,7 @@ public class Interactable : MonoBehaviour
     [SerializeField] private PlayerTPS inputHandler;
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) || (MobileControls.instance != null && MobileControls.instance.IsInteractPressedThisFrame))
         {
             if (heldObj == null)
             {

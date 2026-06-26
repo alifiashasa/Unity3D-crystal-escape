@@ -1240,6 +1240,7 @@ MonoBehaviour:
   crystalText: {fileID: 1422728758}
   winPanel: {fileID: 1913795091}
   gameOverPanel: {fileID: 896816999}
+  collectSound: {fileID: 8300000, guid: be62f444e15a44f4680b3b35c8ed240b, type: 3}
 --- !u!4 &950599868
 Transform:
   m_ObjectHideFlags: 0
@@ -2170,8 +2171,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 763, y: 462.6}
-  m_SizeDelta: {x: 205, y: 50}
+  m_AnchoredPosition: {x: 796.24304, y: 462.6}
+  m_SizeDelta: {x: 271.4861, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1652552607
 GameObject:
@@ -2535,7 +2536,7 @@ Transform:
   m_GameObject: {fileID: 1711722171}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10648207, y: 1.7074026e-15, z: -1.8284732e-16, w: 0.9943147}
-  m_LocalPosition: {x: -5.6083336, y: 0.5546667, z: 4.357667}
+  m_LocalPosition: {x: -5.6083336, y: 0.53859997, z: 4.357667}
   m_LocalScale: {x: 0.06666667, y: 0.06666667, z: 0.06666667}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52280,7 +52281,7 @@ Transform:
   m_GameObject: {fileID: 7348543751943809147}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.55, y: 4.98, z: -26.73}
+  m_LocalPosition: {x: 29.55, y: 4.739, z: -26.73}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:

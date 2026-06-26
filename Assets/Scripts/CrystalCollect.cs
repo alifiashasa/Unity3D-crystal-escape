@@ -6,7 +6,7 @@ public class CrystalCollect : MonoBehaviour
 
     void Update()
     {
-        if(playerNear && Input.GetKeyDown(KeyCode.E))
+        if(playerNear && (Input.GetKeyDown(KeyCode.E) || (MobileControls.instance != null && MobileControls.instance.IsInteractPressedThisFrame)))
         {
             GameManager.instance.AddCrystal();
 
@@ -19,6 +19,10 @@ public class CrystalCollect : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             playerNear = true;
+            if (MobileControls.instance != null)
+            {
+                MobileControls.instance.SetInteractActive(true);
+            }
         }
     }
 
@@ -27,6 +31,18 @@ public class CrystalCollect : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             playerNear = false;
+            if (MobileControls.instance != null)
+            {
+                MobileControls.instance.SetInteractActive(false);
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (playerNear && MobileControls.instance != null)
+        {
+            MobileControls.instance.SetInteractActive(false);
         }
     }
 }

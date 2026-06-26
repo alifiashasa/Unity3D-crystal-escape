@@ -51,11 +51,23 @@ public class PlayerTPS : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        inputActions = new TPS();
+        if (inputActions == null)
+        {
+            inputActions = new TPS();
+        }
+        
+        if (GetComponent<MobileControls>() == null)
+        {
+            gameObject.AddComponent<MobileControls>();
+        }
     }
 
     private void OnEnable()
     {
+        if (inputActions == null)
+        {
+            inputActions = new TPS();
+        }
         inputActions.Enable();
 
         inputActions.Player.Move.performed += OnMove;
@@ -69,15 +81,18 @@ public class PlayerTPS : MonoBehaviour
 
     private void OnDisable()
     {
-        inputActions.Player.Move.performed -= OnMove;
-        inputActions.Player.Move.canceled -= OnMove;
+        if (inputActions != null)
+        {
+            inputActions.Player.Move.performed -= OnMove;
+            inputActions.Player.Move.canceled -= OnMove;
 
-        inputActions.Player.Jump.performed -= OnJump;
+            inputActions.Player.Jump.performed -= OnJump;
 
-        inputActions.Player.Sprint.performed -= OnSprint;
-        inputActions.Player.Sprint.canceled -= OnSprint;
+            inputActions.Player.Sprint.performed -= OnSprint;
+            inputActions.Player.Sprint.canceled -= OnSprint;
 
-        inputActions.Disable();
+            inputActions.Disable();
+        }
     }
 
     private void Update()

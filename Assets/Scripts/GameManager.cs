@@ -92,6 +92,11 @@ public class GameManager : MonoBehaviour
 
         winPanel.SetActive(true);
 
+        if (MobileControls.instance != null)
+        {
+            MobileControls.instance.SetActive(false);
+        }
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -107,6 +112,11 @@ public class GameManager : MonoBehaviour
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
+        }
+
+        if (MobileControls.instance != null)
+        {
+            MobileControls.instance.SetActive(false);
         }
 
         Cursor.lockState = CursorLockMode.None;
