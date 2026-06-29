@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject winPanel;
     public GameObject gameOverPanel;
+    public GameObject pausePanel;
 
     [Header("Audio")]
     [SerializeField] private AudioClip collectSound;
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour
 
     private bool levelComplete = false;
     private bool isGameOver = false;
+    private bool isPaused = false;
+
+    public bool IsPaused => isPaused;
 
     private void Awake()
     {
@@ -28,6 +32,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Lock cursor at start
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1f;
+
         if (gameOverPanel != null)
         {
             Transform restartBtnTransform = gameOverPanel.transform.Find("RestartButton");
@@ -56,6 +65,120 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
+        if (pausePanel != null)
+        {
+            Transform resumeBtnTransform = pausePanel.transform.Find("ResumeButton");
+            if (resumeBtnTransform != null)
+            {
+                Button resumeBtn = resumeBtnTransform.GetComponent<Button>();
+                if (resumeBtn != null)
+                {
+                    resumeBtn.onClick.RemoveAllListeners();
+                    resumeBtn.onClick.AddListener(ResumeGame);
+                }
+            }
+
+            Transform restartBtnTransform = pausePanel.transform.Find("RestartButton");
+            if (restartBtnTransform != null)
+            {
+                Button restartBtn = restartBtnTransform.GetComponent<Button>();
+                if (restartBtn != null)
+                {
+                    restartBtn.onClick.RemoveAllListeners();
+                    restartBtn.onClick.AddListener(RestartGame);
+                }
+            }
+
+            Transform mainMenuBtnTransform = pausePanel.transform.Find("MainMenu");
+            if (mainMenuBtnTransform != null)
+            {
+                Button mainMenuBtn = mainMenuBtnTransform.GetComponent<Button>();
+                if (mainMenuBtn != null)
+                {
+                    mainMenuBtn.onClick.RemoveAllListeners();
+                    mainMenuBtn.onClick.AddListener(MainMenu);
+                }
+            }
+        }
+
+        // Find Pause Button in gameplay UI and bind it
+        GameObject timerCanvas = GameObject.Find("TimerImage");
+        if (timerCanvas != null)
+        {
+            Transform pauseBtnTransform = timerCanvas.transform.Find("PauseButton");
+            if (pauseBtnTransform != null)
+            {
+                Button pauseBtn = pauseBtnTransform.GetComponent<Button>();
+                if (pauseBtn != null)
+                {
+                    pauseBtn.onClick.RemoveAllListeners();
+                    pauseBtn.onClick.AddListener(TogglePause);
+                }
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!levelComplete && !isGameOver)
+            {
+                TogglePause();
+            }
+        }
+    }
+
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+        if (isPaused)
+        {
+            PauseGame();
+        }
+        else
+        {
+            ResumeGame();
+        }
+    }
+
+    public void PauseGame()
+    {
+        isPaused = true;
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(true);
+        }
+
+        if (MobileControls.instance != null)
+        {
+            MobileControls.instance.SetActive(false);
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(false);
+        }
+
+        if (MobileControls.instance != null)
+        {
+            MobileControls.instance.SetActive(true);
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        Time.timeScale = 1f;
     }
 
     public void AddCrystal()
